@@ -41,7 +41,7 @@ export const getAllQuestions = async (req, res) => {
         const questionsList = await Question.find();
         return res.status(200).json(questionsList);
     } catch (error) {
-        res.status(404).json({ message: error.message });
+        return res.status(404).json({ message: error.message });
     }
 }
 export const deleteQuestion = async (req, res) => {
