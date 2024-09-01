@@ -4,7 +4,7 @@ import {
     Box
 } from "@mui/material";
 import QuestionManagement from './QuestionManagement';
-import UserManagement from './UserManagement';
+import QuestionsChart from './components/QuestionsChart';
 
 const Dashboard = () => {
 
@@ -12,7 +12,7 @@ const Dashboard = () => {
         <Box m="0vw 2.5rem">
             <FlexBetween>
                 {/* <QuestionsList /> */}
-                <UserManagement />
+                <QuestionsChart />
             </FlexBetween>
         </Box>
     );

@@ -51,7 +51,7 @@ function App() {
         {User?.result?.admin === true &&
           <Route path="/admin/users" element={<UserManagement />} />}
         {User?.result?.admin === true &&
-          <Route path="/admin/stats" element={<QuestionManagement />} />}
+          <Route path="/admin/stats" element={<Admin />} />}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
