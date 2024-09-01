@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams, Link, useNavigate, useLocation } from 'react-router-dom'
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,6 +10,7 @@ import Avatar from '../../components/avatar/Avatar'
 import './Questions.css'
 import DisplayAnswer from './DisplayAnswer'
 import { deleteQuestion, postAnswer, voteQuestion } from '../../actions/question'
+import jwtDecode from 'jwt-decode';
 
 const QuestionsDetails = () => {
     const { id } = useParams();
@@ -75,6 +76,11 @@ const QuestionsDetails = () => {
     const [Answer, setAnswer] = useState('');
     const User = useSelector(state => state.currentUserReducer);
     const Navigate = useNavigate();
+    // console.log(User);
+    // useEffect(async () => {
+    //     const token = await jwtDecode(User?.token)
+    //     console.log(token);
+    // }, [User])
     const dispatch = useDispatch();
     const handlePostAns = (e, answerLength) => {
         e.preventDefault();
@@ -83,20 +89,19 @@ const QuestionsDetails = () => {
             Navigate('/Auth');
         }
         else {
-            if (Answer === '') {
+
+            if (Answer.length <= 10) {
                 alert('Enter an answer before submitting')
             } else {
-                dispatch(postAnswer({ id, noOfAnswers: answerLength + 1, answerBody: Answer, userAnswered: User.result.name, userId: User?.result?._id }))
+                dispatch(postAnswer({ id, noOfAnswers: answerLength + 1, answerBody: Answer, userAnswered: User?.result?.name, userId: User?.result?._id }))
             }
         }
     }
 
-    const location = useLocation()
     // console.log(location);
-    const url = 'http://localhost:3000'
     const handleShare = () => {
-        copy(url + location.pathname);
-        alert('url has been coppied' + url + location.pathname)
+        copy(window.location.href);
+        alert('url has been coppied' + " " + window.location.href)
     }
 
     const handleDelete = () => {
@@ -104,12 +109,11 @@ const QuestionsDetails = () => {
     }
 
     const handleUpvote = () => {
-        dispatch(voteQuestion(id, 'upVote', User.result._id))
+        dispatch(voteQuestion(id, 'upVote', User?.result?._id))
     }
     const handleDownvote = () => {
-        dispatch(voteQuestion(id, 'downVote', User.result._id))
+        dispatch(voteQuestion(id, 'downVote', User?.result?._id))
     }
-
     return (
         <div className='question-details-page'>
             {
@@ -168,8 +172,11 @@ const QuestionsDetails = () => {
                                     }
                                     <section className='post-ans-container'>
                                         <h3>Your Answer</h3>
-                                        <form onSubmit={(e) => { handlePostAns(e, question.answer.length) }}>
-                                            <textarea id="" cols="30" rows="10" onChange={e => setAnswer(e.target.value)}></textarea><br />
+                                        <form onSubmit={(e) => {
+                                            handlePostAns(e, question.answer.length);
+                                            setAnswer("");
+                                        }}>
+                                            <textarea id="" cols="30" rows="10" onChange={e => setAnswer(e.target.value)} value={Answer}></textarea><br />
                                             <input type="submit" className='post-ans-btn' value="Post Your Answer" />
                                         </form>
                                         <p>

@@ -12,7 +12,7 @@ import UserProfile from '../UserProfile/UserProfile';
 
 const AllRoutes = () => {
     return (
-        <Routes>
+        <>
             <Route path='/' element={<Home />} />
             <Route path='/Auth' element={<Auth />} />
             <Route path='/Home' element={<Home />} />
@@ -20,9 +20,9 @@ const AllRoutes = () => {
             <Route path='/AskQuestion' element={<AskQuestion />} />
             <Route path='/Questions/:id' element={<DisplayQuestion />} />
             <Route path='/Tags' element={<Tags />} />
-            <Route path='/Users' element={<Users/>} />
-            <Route path='/Users/:id' element={<UserProfile/>} />
-        </Routes>
+            <Route path='/Users' element={<Users />} />
+            <Route path='/Users/:id' element={<UserProfile />} />
+        </>
     )
 }
 

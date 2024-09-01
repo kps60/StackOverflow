@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { updateProfile } from '../../actions/users'
 import './UserProfile.css'
@@ -6,15 +6,16 @@ import './UserProfile.css'
 const EditProkfileForm = ({ setSwitch, currentUser }) => {
     const [name, setName] = useState(currentUser?.result?.name)
     const [about, setAbout] = useState(currentUser?.result?.about)
-    const [tags, setTags] = useState('')
+    const [tags, setTags] = useState(currentUser?.result?.tags)
+    useEffect(() => {
+        setTags(currentUser?.result?.tags)
+        setAbout(currentUser?.result?.about)
+        setName(currentUser?.result?.name)
+    }, [currentUser])
     const dispatch = useDispatch();
     const handleEdit = (e) => {
         e.preventDefault();
-        if (tags.length === 0) {
-            dispatch(updateProfile(currentUser?.result?._id, { name, about, tags: currentUser?.result?.tags }))
-        } else {
-            dispatch(updateProfile(currentUser?.result?._id, { name, about, tags }))
-        }
+        dispatch(updateProfile(currentUser?.result?._id, { name, about, tags: tags }))
         setSwitch(false);
     }
     return (
@@ -33,7 +34,7 @@ const EditProkfileForm = ({ setSwitch, currentUser }) => {
                 <label htmlFor="tags">
                     <h3>Tags</h3>
                     <p>Add tags sapparated by 1 space</p>
-                    <input type="text" id='tags' onChange={(e) => setTags(e.target.value.split(" "))} />
+                    <input type="text" id='tags' value={tags.join(' ')} onChange={(e) => setTags(e.target.value.split(" "))} />
                 </label><br />
                 <input type="submit" value='Save Profile' className='user-submit-btn' />
                 <input type="button" value="Cancel" className='user-cancel-btn' onClick={() => setSwitch(false)} />

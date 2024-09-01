@@ -6,7 +6,7 @@ import QuestionList from './QuestionList'
 import './HomeMainbar.css'
 const HomeMainbar = () => {
 
-  
+
   // var questionsList = [{
   //   _id: 1,
   //   upVotes: 3,
@@ -59,11 +59,11 @@ const HomeMainbar = () => {
   //     userId: 2,
   //   }]
   // }]
-  
+
   const questionsList = useSelector(state => state.questionsReducer);
 
   const location = useLocation();
-  const user = useSelector(state=> state.currentUserReducer);
+  const user = useSelector(state => state.currentUserReducer);
   const navigate = useNavigate();
   const checkAuth = () => {
     if (user === null) {
@@ -86,10 +86,16 @@ const HomeMainbar = () => {
         {
           questionsList.data === null ?
             <h1>Loading...</h1> :
-            <>
-              <p>{questionsList.data.length} Questions</p>
-             <QuestionList questionsList={questionsList.data} />
-            </>
+            location.pathname === '/' ?
+              <>
+                <p>{questionsList.data.length} Questions</p>
+                <QuestionList top={true} questionsList={questionsList.data} />
+              </>
+              :
+              <>
+                <p>{questionsList.data.length} Questions</p>
+                <QuestionList top={null} questionsList={questionsList.data} />
+              </>
         }
       </div>
     </div>

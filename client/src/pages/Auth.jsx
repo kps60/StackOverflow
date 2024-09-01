@@ -1,4 +1,4 @@
-  import React from 'react';
+import React from 'react';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -15,7 +15,6 @@ const Auth = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const handleSwitch = (event) => {
     setIsSignup(!isSignup)
     event.preventDefault();
@@ -29,6 +28,8 @@ const Auth = () => {
     if (!password) {
       alert('enter a password to continue');
     }
+
+
     if (isSignup) {
       if (!name) {
         alert('enter your name to continue');
@@ -37,11 +38,14 @@ const Auth = () => {
     } else {
       dispatch(login({ email, password }, navigate))
     }
+
   }
 
   return (
     <section className='auth-section'>
-      {isSignup && <AboutAuth />}
+      <div className="auth-continer-1">
+        {isSignup && <AboutAuth />}
+      </div>
       <div className="auth-container-2">
         {!isSignup && <img src={logo} alt="Stack overflow" className='login-logo' />}
         <form onSubmit={handleSubmit}>

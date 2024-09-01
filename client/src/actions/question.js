@@ -1,5 +1,5 @@
 import * as api from '../api';
-
+import Groqans from "../pages/AskQuestions/Groqans"
 export const askQuestion = (questionData, navigate) => async (dispatch) => {
     try {
         const { data } = await api.postQuestion(questionData);
@@ -7,7 +7,18 @@ export const askQuestion = (questionData, navigate) => async (dispatch) => {
         dispatch(fetchAllQuestions());
         navigate('/');
     } catch (error) {
-        console.log(error);
+        alert(error.response.data.message);
+    }
+}
+export const askGroq = (questionData, navigate) => async (dispatch) => {
+    try {
+        const { data } = await api.Questiongroq(questionData);
+        <Groqans content={data?.chats?.content} />
+        // dispatch({ type: "POST_QUESTION", payload: data });
+        // dispatch(fetchAllQuestions());
+        return data;
+    } catch (error) {
+        alert(error.response.data.message);
     }
 }
 export const fetchAllQuestions = () => async (dispatch) => {
@@ -15,24 +26,26 @@ export const fetchAllQuestions = () => async (dispatch) => {
         const { data } = await api.getAllQuestions();
         dispatch({ type: "FETCH_ALL_QUESTIONS", payload: data });
     } catch (error) {
-        console.log(error);
+        alert(error.response.data.message);
     }
 }
-export const deleteQuestion = (id, navigate) => async (dispatch) => {
+export const deleteQuestion = (_id, navigate, to) => async (dispatch) => {
     try {
-        const { data } =await api.deleteQuestion(id);
+        const data = await api.deleteQuestion(_id);
+        alert(data?.message)
         dispatch(fetchAllQuestions());
-        navigate('/');
+        navigate(to || '/');
     } catch (error) {
-        console.log(error);
+        alert(error.response.data.message);
     }
 }
 export const voteQuestion = (id, value, userId) => async (dispatch) => {
     try {
-        const { data } = await api.voteQuestion(id, value, userId);
+        const data = await api.voteQuestion(id, value, userId);
+        alert(data?.message)
         dispatch(fetchAllQuestions());
     } catch (error) {
-        console.log(error);
+        alert(error.response.data.message);
     }
 }
 
@@ -43,15 +56,26 @@ export const postAnswer = (answerdata) => async (dispatch) => {
         dispatch({ type: "POST_ANSWER", payload: data })
         dispatch(fetchAllQuestions())
     } catch (error) {
-        console.log(error);
+        alert(error.response.data.message);
     }
 }
 export const deleteAnswer = (id, answerId, noOfAnswers) => async (dispatch) => {
-    console.log(id, answerId, noOfAnswers);
     try {
-        const { data } =  await api.deleteAnswer(id, answerId, noOfAnswers)
+        const data = await api.deleteAnswer(id, answerId, noOfAnswers)
+        // alert(data.message);
         dispatch(fetchAllQuestions())
     } catch (error) {
-        console.log(error);
+        alert(error.response.data.message);
+    }
+}
+export const deleteAdminQuestion = (_id, navigate, to) => async (dispatch) => {
+    try {
+        const { data } = await api.deleteAdminQuestion(_id);
+        // console.log(data);
+        dispatch({ type: "DELETE_QUESTION", payload: data });
+        alert("Question deleted succesfully")
+        // navigate(to || '/');
+    } catch (error) {
+        alert(error.response.data.message);
     }
 }

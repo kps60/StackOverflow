@@ -6,6 +6,8 @@ const questionsReducer = (state = { data: null }, action) => {
             return { ...state };
         case "FETCH_ALL_QUESTIONS":
             return { ...state, data: action.payload };
+        case 'DELETE_QUESTION':
+            return {...state.data.filter((ques) => ques._id !== action.payload._id)};
         default:
             return state;
     }

@@ -11,17 +11,17 @@ export const postAnswer = async (req, res) => {
     updateNoOfQuestions(_id, noOfAnswer);
     try {
         const updateQuestion = await Questions.findByIdAndUpdate(_id, { $addToSet: { 'answer': [{ answerBody, userAnswered, userId }] } })
-        res.status(200).json(updateQuestion);
+        return res.status(200).json(updateQuestion);
     } catch (error) {
-        res.status(400).json(error);
+        return res.status(400).json(error.message);
     }
 }
 
-const updateNoOfQuestions = async (_id, noOfAnswer) => {
+export const updateNoOfQuestions = async (_id, noOfAnswer) => {
     try {
         await Questions.findByIdAndUpdate(_id, { $set: { 'noOfAnswers': noOfAnswer } })
     } catch (error) {
-        console.log(error);
+        return console.log(error.message);
     }
 }
 
@@ -40,9 +40,9 @@ export const deleteAnswer = async (req, res) => {
             { _id },
             { $pull: { 'answer': { _id: answerId } } }
         )
-        res.status(200).json({ message: "succesfully deleted..." })
+        return res.status(200).json({ message: "succesfully deleted..." })
     } catch (error) {
-        res.status(405).json(error);
+        return res.status(405).json(error);
     }
 
 }

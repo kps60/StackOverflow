@@ -13,6 +13,15 @@ export const updateProfile = (id, updataData) => async (dispatch) => {
         const { data } = await api.updateProfile(id, updataData)
         dispatch({ type: "UPDATE_CURRENT_USER", payload: data });
     } catch (error) {
-        console.log(error);
+        alert(error.response.data.message);
+    }
+}
+export const deleteProfile = (id) => async (dispatch) => {
+    try {
+        const { data } = await api.deleteProfile(id);
+        dispatch({ type: "DELETE_USER", payload: data });
+        alert("User deleted Successfully with all questions created with answers")
+    } catch (error) {
+        alert(error.response.data.message);
     }
 }
